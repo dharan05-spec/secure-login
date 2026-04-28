@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup 2FA — SecureApp</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div class="page-wrapper">
+  <div class="card" style="max-width:500px">
+    <div class="brand">
+      <div class="brand-icon">🛡</div>
+      <span class="brand-name">Two-Factor Setup</span>
+    </div>
+    <h1>Enable 2FA</h1>
+    <p class="subtitle">Scan the QR code with your authenticator app, then enter the 6-digit code to confirm.</p>
+
+    <% if (errors.length) { %>
+      <ul class="errors-box">
+        <% errors.forEach(e => { %><li>⚠ <%= e.msg %></li><% }) %>
+      </ul>
+    <% } %>
+
+    <% if (qrDataURL) { %>
+      <div style="text-align:center">
+        <div class="qr-box">
+          <img src="<%= qrDataURL %>" alt="QR Code" width="180" height="180" />
+        </div>
+      </div>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.5rem;">Can't scan? Enter this key manually:</p>
+      <div class="secret-code"><%= secret %></div>
+    <% } %>
+
+    <form method="POST" action="/2fa/setup">
+      <div class="form-group">
+        <label for="token">Authenticator Code</label>
+        <input type="number" id="token" name="token" class="otp-input" placeholder="000000" maxlength="6" required />
+      </div>
+      <button type="submit" class="btn btn-primary">Verify & Enable →</button>
+    </form>
+    <div class="link-row"><a href="/dashboard">← Back to Dashboard</a></div>
+  </div>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>
