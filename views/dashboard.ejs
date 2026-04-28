@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — SecureApp</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div class="page-wrapper">
+  <div class="dashboard-wrapper">
+    <div class="dash-header">
+      <div>
+        <div class="brand" style="margin-bottom:0.4rem">
+          <div class="brand-icon">🔐</div>
+          <span class="brand-name">SecureApp</span>
+        </div>
+        <h1 class="dash-title">Hey, <span><%= user.username %></span> 👋</h1>
+      </div>
+      <form method="POST" action="/logout">
+        <button type="submit" class="btn btn-ghost" style="width:auto;padding:0.6rem 1.2rem;">Sign out</button>
+      </form>
+    </div>
+
+    <% if (flash) { %>
+      <div class="flash <%= flash.type %>" style="margin-bottom:1.25rem"><%= flash.message %></div>
+    <% } %>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Logged in as</div>
+        <div class="stat-value">@<%= user.username %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Email</div>
+        <div class="stat-value"><%= user.email %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Member since</div>
+        <div class="stat-value"><%= new Date(user.created_at).toLocaleDateString() %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Last login</div>
+        <div class="stat-value"><%= user.last_login ? new Date(user.last_login).toLocaleString() : 'Just now' %></div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">
+        🛡 Two-Factor Authentication
+        <% if (user.two_fa_enabled) { %>
+          <span class="badge badge-on">● Enabled</span>
+        <% } else { %>
+          <span class="badge badge-off">○ Disabled</span>
+        <% } %>
+      </div>
+      <p class="section-desc">
+        <% if (user.two_fa_enabled) { %>
+          Your account is protected with 2FA. A code from your authenticator app is required every time you sign in.
+        <% } else { %>
+          Add an extra layer of security. Once enabled, you'll need a code from Google Authenticator or Authy at every login.
+        <% } %>
+      </p>
+      <% if (!user.two_fa_enabled) { %>
+        <a href="/2fa/setup" class="btn btn-primary" style="width:auto;display:inline-flex;padding:0.65rem 1.4rem;">Enable 2FA →</a>
+      <% } else { %>
+        <form method="POST" action="/2fa/disable" onsubmit="return confirm('Disable 2FA?')">
+          <button type="submit" class="btn btn-danger" style="width:auto;display:inline-flex;padding:0.65rem 1.4rem;">Disable 2FA</button>
+        </form>
+      <% } %>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">🔒 Security Overview</div>
+      <p class="section-desc">
+        Your password is stored using <strong>bcrypt</strong> (cost factor 12).
+        Sessions use HTTP-only cookies. All DB queries are parameterized against SQL injection.
+      </p>
+    </div>
+  </div>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>
