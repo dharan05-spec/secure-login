@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — SecureApp</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div class="page-wrapper">
+  <div class="card">
+    <div class="brand">
+      <div class="brand-icon">🔐</div>
+      <span class="brand-name">SecureApp</span>
+    </div>
+    <h1>Create account</h1>
+    <p class="subtitle">Join securely — your data stays yours.</p>
+
+    <% if (flash) { %>
+      <div class="flash <%= flash.type %>"><%= flash.message %></div>
+    <% } %>
+    <% if (errors.length) { %>
+      <ul class="errors-box">
+        <% errors.forEach(e => { %><li>⚠ <%= e.msg %></li><% }) %>
+      </ul>
+    <% } %>
+
+    <form method="POST" action="/register" novalidate>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="cool_username" required autocomplete="username" />
+      </div>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Min 8 chars, 1 uppercase, 1 number" required />
+        <div class="pw-strength">
+          <div class="pw-bar"></div>
+          <div class="pw-bar"></div>
+          <div class="pw-bar"></div>
+          <div class="pw-bar"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat password" required />
+      </div>
+      <button type="submit" class="btn btn-primary">Create Account →</button>
+    </form>
+    <div class="link-row">Already have an account? <a href="/login">Log in</a></div>
+  </div>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>
